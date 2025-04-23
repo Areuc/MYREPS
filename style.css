@@ -1,0 +1,100 @@
+/* Diseño general */
+body {
+  font-family: 'Orbitron', sans-serif;
+  background-color: #0d0d0d;
+  color: #ffffff;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.centered {
+  text-align: center;
+  max-width: 500px; /* Max width para que no se extienda demasiado */
+  width: 100%;
+}
+
+.hidden {
+  display: none;
+}
+
+h1, h2, h3 {
+  color: #00ffff; /* Cyan neon */
+}
+
+input, select, button {
+  margin: 10px 0;
+  padding: 12px;
+  background-color: #1a1a1a;
+  border: 2px solid #00ffff; /* Cyan neon */
+  color: #ffffff;
+  font-size: 1.1rem;
+  border-radius: 5px; /* Borde redondeado */
+}
+
+button:hover {
+  background-color: #00ffff; /* Cyan neon */
+  color: #0d0d0d;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table caption {
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+}
+
+th, td {
+  padding: 10px;
+  text-align: center;
+}
+
+th {
+  background-color: #1a1a1a;
+}
+
+td {
+  background-color: #333333;
+}
+
+button {
+  cursor: pointer;
+  background-color: #1a1a1a;
+  color: #ffffff;
+  border: 1px solid #00ffff; /* Cyan neon */
+}
+
+button:hover {
+  background-color: #00ffff; /* Cyan neon */
+  color: #0d0d0d;
+}
+
+/* Estilo para las secciones */
+section {
+  margin-top: 20px;
+}
+
+#lastPRContainer div {
+  margin-top: 10px;
+}
+
+#prContainer {
+  margin-top: 30px;
+}
+
+input[type="date"] {
+  padding: 10px;
+}

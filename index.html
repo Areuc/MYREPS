@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Registro de PR - Gimnasio</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1> MyPR</h1>
+
+  <!-- Resumen de últimos PR por grupo -->
+  <section>
+    <h2>🔥Últimos PR</h2>
+    <div id="lastPRContainer"></div>
+  </section>
+
+  <!-- Selección y registro -->
+  <section>
+    <form id="prForm">
+      <label>Grupo Muscular:
+        <select id="groupSelect" required></select>
+      </label>
+      <label>Ejercicio:
+        <select id="exerciseSelect" required></select>
+      </label>
+      <label>Peso (kg):
+        <input type="number" id="weightInput" required>
+      </label>
+      <label>Repeticiones:
+        <input type="number" id="repsInput" required>
+      </label>
+      <label>Fecha:
+        <input type="date" id="dateInput" required>
+      </label>
+      <button type="submit">Registrar PR</button>
+    </form>
+  </section>
+
+  <!-- Tabla de resultados -->
+  <section>
+    <h2>Historial de PR</h2>
+    <div id="prContainer"></div>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>
+
+
+
