@@ -7,41 +7,50 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1> MyPR</h1>
+  <div id="userContainer" class="centered">
+    <h1>🔥 Registro de PR - Gimnasio</h1>
+    <p>Por favor, ingresa tu nombre de usuario:</p>
+    <input type="text" id="userName" placeholder="Nombre de usuario" required>
+    <button onclick="setUser()">Iniciar sesión</button>
+  </div>
 
-  <!-- Resumen de últimos PR por grupo -->
-  <section>
-    <h2>🔥Últimos PR</h2>
-    <div id="lastPRContainer"></div>
-  </section>
+  <div id="appContainer" class="centered hidden">
+    <h2>Bienvenido, <span id="userDisplay"></span></h2>
 
-  <!-- Selección y registro -->
-  <section>
-    <form id="prForm">
-      <label>Grupo Muscular:
-        <select id="groupSelect" required></select>
-      </label>
-      <label>Ejercicio:
-        <select id="exerciseSelect" required></select>
-      </label>
-      <label>Peso (kg):
-        <input type="number" id="weightInput" required>
-      </label>
-      <label>Repeticiones:
-        <input type="number" id="repsInput" required>
-      </label>
-      <label>Fecha:
-        <input type="date" id="dateInput" required>
-      </label>
-      <button type="submit">Registrar PR</button>
-    </form>
-  </section>
+    <!-- Resumen de últimos PR por grupo -->
+    <section>
+      <h3>Últimos PR</h3>
+      <div id="lastPRContainer"></div>
+    </section>
 
-  <!-- Tabla de resultados -->
-  <section>
-    <h2>Historial de PR</h2>
-    <div id="prContainer"></div>
-  </section>
+    <!-- Selección y registro -->
+    <section>
+      <form id="prForm">
+        <label>Grupo Muscular:
+          <select id="groupSelect" required></select>
+        </label>
+        <label>Ejercicio:
+          <select id="exerciseSelect" required></select>
+        </label>
+        <label>Peso (kg):
+          <input type="number" id="weightInput" required>
+        </label>
+        <label>Repeticiones:
+          <input type="number" id="repsInput" required>
+        </label>
+        <label>Fecha:
+          <input type="date" id="dateInput" required>
+        </label>
+        <button type="submit">Registrar PR</button>
+      </form>
+    </section>
+
+    <!-- Tabla de resultados -->
+    <section>
+      <h3>Historial de PR</h3>
+      <div id="prContainer"></div>
+    </section>
+  </div>
 
   <script src="app.js"></script>
 </body>
