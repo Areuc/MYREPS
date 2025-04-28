@@ -1,182 +1,186 @@
-const exercises = {
-  PECHO: [
-    "Press de Banca",
-    "Press Inclinado",
-    "Press de Banca Unilateral",
-    "Press Inclinado Unilateral",
-    "Cruces entre Poleas"
-  ],
-  ESPALDA: [
-    "Remo T",
-    "Jalones",
-    "Remo",
-    "Lumbar"
-  ],
-  BICEPS: [
-    "Curl Predicador",
-    "Curl tumbado en banco",
-    "Curl Martillo"
-  ],
-  TRICEPS: [
-    "Extensión de tríceps en polea con cuerda",
-    "Cruzado Cboom",
-    "Katana"
-  ],
-  PIERNAS: [
-    "Prensa de piernas",
-    "Hip thrust",
-    "Peso muerto",
-    "Sentadilla Hack",
-    "Isquiotibiales",
-    "Extensión de cuádriceps",
-    "Abductor y aductor"
-  ]
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+import {
+    getFirestore,
+    collection,
+    addDoc,
+    getDocs,
+    deleteDoc,
+    doc
+} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyB8TBS-VzuXrEgFbnxwek9Dl9XMUE8gtGo",
+    authDomain: "myreps-3a2e0.firebaseapp.com",
+    projectId: "myreps-3a2e0",
+    storageBucket: "myreps-3a2e0.firebasestorage.app",
+    messagingSenderId: "600439507813",
+    appId: "1:600439507813:web:a46b3684b871fd20acaf8c",
+    measurementId: "G-3PY42KJSK3"
 };
 
-let currentUser = localStorage.getItem("currentUser");
-const prData = JSON.parse(localStorage.getItem("prData")) || {};
-const userNameInput = document.getElementById("userName");
-const userDisplay = document.getElementById("userDisplay");
-const groupSelect = document.getElementById("groupSelect");
-const exerciseSelect = document.getElementById("exerciseSelect");
-const weightInput = document.getElementById("weightInput");
-const repsInput = document.getElementById("repsInput");
-const dateInput = document.getElementById("dateInput");
-const prContainer = document.getElementById("prContainer");
-const lastPRContainer = document.getElementById("lastPRContainer");
-const userContainer = document.getElementById("userContainer");
-const appContainer = document.getElementById("appContainer");
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-function setUser() {
-  const userName = userNameInput.value.trim();
-  if (userName) {
-    currentUser = userName;
-    localStorage.setItem("currentUser", currentUser);
-    userContainer.classList.add("hidden");
-    appContainer.classList.remove("hidden");
-    userDisplay.textContent = currentUser;
-    populateGroups();
-    populateExercises("PECHO");
-    renderPRs();
-    renderLastPRs();
-  }
+// Elementos comunes
+let currentUser = null;
+
+// ====================
+// Funciones para index.html
+// ====================
+if (document.getElementById('loginSection')) {
+    // Elementos del DOM
+    const loginEmail = document.getElementById('loginEmail');
+    const loginPassword = document.getElementById('loginPassword');
+    const loginBtn = document.getElementById('loginBtn');
+    const registerEmail = document.getElementById('registerEmail');
+    const registerPassword = document.getElementById('registerPassword');
+    const registerBtn = document.getElementById('registerBtn');
+    const showRegister = document.getElementById('showRegister');
+    const showLogin = document.getElementById('showLogin');
+    const loginSection = document.getElementById('loginSection');
+    const registerSection = document.getElementById('registerSection');
+
+    // Manejo de vistas
+    showRegister.addEventListener('click', () => {
+        loginSection.classList.add('hidden');
+        registerSection.classList.remove('hidden');
+    });
+
+    showLogin.addEventListener('click', () => {
+        registerSection.classList.remove('hidden');
+        loginSection.classList.add('hidden');
+    });
+
+    // Login
+    loginBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        try {
+            await signInWithEmailAndPassword(auth, loginEmail.value, loginPassword.value);
+            window.location.href = 'app.html';
+        } catch (error) {
+            document.getElementById('loginMessage').textContent = `❌ Error: ${error.message}`;
+        }
+    });
+
+    // Registro
+    registerBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        try {
+            await createUserWithEmailAndPassword(auth, registerEmail.value, registerPassword.value);
+            window.location.href = 'app.html';
+        } catch (error) {
+            document.getElementById('registerMessage').textContent = `❌ Error: ${error.message}`;
+        }
+    });
 }
 
-function saveData() {
-  localStorage.setItem("prData", JSON.stringify(prData));
-}
+// ====================
+// Funciones para app.html
+// ====================
+if (document.getElementById('prForm')) {
+    // Elementos del DOM
+    const userEmail = document.getElementById('userEmail');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const prForm = document.getElementById('prForm');
+    const muscleGroup = document.getElementById('muscleGroup');
+    const exercise = document.getElementById('exercise');
+    const weight = document.getElementById('weight');
+    const reps = document.getElementById('reps');
+    const prDate = document.getElementById('prDate');
+    const prList = document.getElementById('prList');
 
-function populateGroups() {
-  groupSelect.innerHTML = '';
-  for (let group in exercises) {
-    const option = new Option(group, group);
-    groupSelect.add(option);
-  }
-}
+    const exercises = {
+        PECHO: ["Press de Banca", "Press Inclinado", "Press de Banca Unilateral", "Press Inclinado Unilateral", "Cruces entre Poleas"],
+        ESPALDA: ["Remo T", "Jalones", "Remo", "Lumbar"],
+        PIERNAS: ["Prensa de piernas", "Hip thrust", "Peso muerto", "Sentadilla Hack", "Isquiotibiales"]
+    };
 
-function populateExercises(group) {
-  exerciseSelect.innerHTML = '';
-  exercises[group].forEach(ex => {
-    const option = new Option(ex, ex);
-    exerciseSelect.add(option);
-  });
-}
+    // Cargar ejercicios
+    muscleGroup.addEventListener('change', () => {
+        exercise.innerHTML = '';
+        exercises[muscleGroup.value].forEach(ex => {
+            exercise.add(new Option(ex, ex));
+        });
+    });
 
-function renderPRs() {
-  prContainer.innerHTML = '';
-  if (!prData[currentUser]) prData[currentUser] = {};
+    // Cargar inicial
+    muscleGroup.dispatchEvent(new Event('change'));
 
-  for (let group in prData[currentUser]) {
-    const groupSection = document.createElement("section");
-    groupSection.innerHTML = `<h3>${group}</h3>`;
+    // Logout
+    logoutBtn.addEventListener('click', () => {
+        signOut(auth);
+        window.location.href = 'index.html';
+    });
 
-    for (let exercise in prData[currentUser][group]) {
-      const table = document.createElement("table");
-      table.innerHTML = `<caption>${exercise}</caption>
-        <tr><th>Fecha</th><th>Peso (kg)</th><th>Repeticiones</th><th>Acciones</th></tr>`;
+    // Guardar PR
+    prForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        try {
+            const prData = {
+                group: muscleGroup.value,
+                exercise: exercise.value,
+                weight: parseFloat(weight.value),
+                reps: parseInt(reps.value),
+                date: prDate.value,
+                timestamp: new Date()
+            };
 
-      prData[currentUser][group][exercise].forEach((pr, index) => {
-        table.innerHTML += `<tr>
-          <td>${pr.date}</td>
-          <td>${pr.weight}</td>
-          <td>${pr.reps}</td>
-          <td>
-            <button onclick="editPR('${group}', '${exercise}', ${index})">Editar</button>
-            <button onclick="deletePR('${group}', '${exercise}', ${index})">Eliminar</button>
-          </td>
-        </tr>`;
-      });
+            await addDoc(collection(db, `users/${currentUser.uid}/prs`), prData);
+            prForm.reset();
+            loadPRs();
+        } catch (error) {
+            console.error('Error al guardar PR:', error);
+        }
+    });
 
-      groupSection.appendChild(table);
+    // Cargar PRs
+    async function loadPRs() {
+        prList.innerHTML = '';
+        const querySnapshot = await getDocs(collection(db, `users/${currentUser.uid}/prs`));
+        querySnapshot.forEach(doc => {
+            const pr = doc.data();
+            const prElement = document.createElement('div');
+            prElement.className = 'pr-item';
+            prElement.innerHTML = `
+                <div class="pr-group">${pr.group}</div>
+                <div class="pr-exercise">${pr.exercise}</div>
+                <div class="pr-weight">${pr.weight} kg</div>
+                <div class="pr-reps">${pr.reps} reps</div>
+                <div class="pr-date">${pr.date}</div>
+                <button class="delete-btn" data-id="${doc.id}">🗑️</button>
+            `;
+            prList.appendChild(prElement);
+        });
     }
 
-    prContainer.appendChild(groupSection);
-  }
+    // Eliminar PR
+    prList.addEventListener('click', async (e) => {
+        if (e.target.classList.contains('delete-btn')) {
+            const prId = e.target.dataset.id;
+            await deleteDoc(doc(db, `users/${currentUser.uid}/prs`, prId));
+            loadPRs();
+        }
+    });
 }
 
-function renderLastPRs() {
-  lastPRContainer.innerHTML = '';
-  if (!prData[currentUser]) prData[currentUser] = {};
-
-  for (let group in prData[currentUser]) {
-    const groupDiv = document.createElement("div");
-    groupDiv.innerHTML = `<strong>${group}:</strong>`;
-
-    for (let exercise in prData[currentUser][group]) {
-      const lastPR = prData[currentUser][group][exercise].slice(-1)[0];
-      groupDiv.innerHTML += `<p><strong>${exercise}:</strong> ${lastPR.weight}kg x ${lastPR.reps} reps (${lastPR.date})</p>`;
+// Manejo de autenticación global
+onAuthStateChanged(auth, (user) => {
+    currentUser = user;
+    
+    if (window.location.pathname.endsWith('app.html')) {
+        if (!user) window.location.href = 'index.html';
+        else document.getElementById('userEmail').textContent = user.email;
+    } else {
+        if (user) window.location.href = 'app.html';
     }
-
-    lastPRContainer.appendChild(groupDiv);
-  }
-}
-
-function editPR(group, exercise, index) {
-  const pr = prData[currentUser][group][exercise][index];
-  groupSelect.value = group;
-  populateExercises(group);
-  exerciseSelect.value = exercise;
-  weightInput.value = pr.weight;
-  repsInput.value = pr.reps;
-  dateInput.value = pr.date;
-
-  deletePR(group, exercise, index);
-}
-
-function deletePR(group, exercise, index) {
-  prData[currentUser][group][exercise].splice(index, 1);
-  if (prData[currentUser][group][exercise].length === 0) {
-    delete prData[currentUser][group][exercise];
-  }
-  if (Object.keys(prData[currentUser][group]).length === 0) {
-    delete prData[currentUser][group];
-  }
-  saveData();
-  renderPRs();
-  renderLastPRs();
-}
-
-document.getElementById("prForm").addEventListener("submit", e => {
-  e.preventDefault();
-  const group = groupSelect.value;
-  const exercise = exerciseSelect.value;
-  const weight = parseFloat(weightInput.value);
-  const reps = parseInt(repsInput.value);
-  const date = dateInput.value;
-
-  if (!prData[currentUser][group]) prData[currentUser][group] = {};
-  if (!prData[currentUser][group][exercise]) prData[currentUser][group][exercise] = [];
-
-  prData[currentUser][group][exercise].push({ weight, reps, date });
-  saveData();
-  renderPRs();
-  renderLastPRs();
-  e.target.reset();
-  populateExercises(group);
-});
-
-groupSelect.addEventListener("change", () => {
-  populateExercises(groupSelect.value);
 });
 
   
