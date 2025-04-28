@@ -1,100 +1,160 @@
-/* Diseño general */
+:root {
+  --neon-cyan: #00f3ff;
+  --bg-dark: #0a0a0f;
+  --bg-darker: #050507;
+}
+
 body {
   font-family: 'Orbitron', sans-serif;
-  background-color: #0d0d0d;
-  color: #ffffff;
+  background: var(--bg-dark);
+  color: var(--neon-cyan);
+  min-height: 100vh;
   margin: 0;
-  padding: 0;
-  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
 }
 
-.centered {
-  text-align: center;
-  max-width: 500px; /* Max width para que no se extienda demasiado */
-  width: 100%;
-}
-
+/* Estilos Comunes */
 .hidden {
-  display: none;
+  display: none !important;
 }
 
-h1, h2, h3 {
-  color: #00ffff; /* Cyan neon */
-}
-
-input, select, button {
-  margin: 10px 0;
-  padding: 12px;
-  background-color: #1a1a1a;
-  border: 2px solid #00ffff; /* Cyan neon */
-  color: #ffffff;
-  font-size: 1.1rem;
-  border-radius: 5px; /* Borde redondeado */
-}
-
-button:hover {
-  background-color: #00ffff; /* Cyan neon */
-  color: #0d0d0d;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-
-table caption {
-  font-size: 1.3rem;
-  margin-bottom: 10px;
-}
-
-th, td {
-  padding: 10px;
+.neon-title {
   text-align: center;
+  text-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+  margin-bottom: 2rem;
 }
 
-th {
-  background-color: #1a1a1a;
+.neon-input {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  background: transparent;
+  border: 1px solid var(--neon-cyan);
+  color: var(--neon-cyan);
+  border-radius: 4px;
+  transition: all 0.3s;
 }
 
-td {
-  background-color: #333333;
+.neon-input:focus {
+  outline: none;
+  box-shadow: 0 0 10px var(--neon-cyan);
 }
 
-button {
+.neon-btn {
+  background: transparent;
+  border: 1px solid var(--neon-cyan);
+  color: var(--neon-cyan);
+  padding: 12px 24px;
+  margin: 10px 0;
   cursor: pointer;
-  background-color: #1a1a1a;
-  color: #ffffff;
-  border: 1px solid #00ffff; /* Cyan neon */
+  transition: all 0.3s;
+  width: 100%;
 }
 
-button:hover {
-  background-color: #00ffff; /* Cyan neon */
-  color: #0d0d0d;
+.neon-btn:hover {
+  background: rgba(0, 243, 255, 0.1);
+  box-shadow: 0 0 15px var(--neon-cyan);
 }
 
-/* Estilo para las secciones */
-section {
-  margin-top: 20px;
+/* Página de Auth */
+.auth-container {
+  width: 100%;
+  max-width: 400px;
+  padding: 2rem;
+  border: 1px solid var(--neon-cyan);
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(0, 243, 255, 0.1);
+  background: var(--bg-darker);
 }
 
-#lastPRContainer div {
-  margin-top: 10px;
+.auth-switch {
+  text-align: center;
+  color: #666;
+  margin-top: 1rem;
 }
 
-#prContainer {
-  margin-top: 30px;
+.auth-switch span {
+  color: var(--neon-cyan);
+  text-decoration: underline;
+  cursor: pointer;
 }
 
-input[type="date"] {
+.neon-message {
+  text-align: center;
+  margin: 1rem 0;
+  animation: glow 1s infinite alternate;
+}
+
+/* Página de App */
+.app-container {
+  width: 100%;
+  max-width: 800px;
+  padding: 2rem;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--neon-cyan);
+}
+
+.pr-section {
+  background: var(--bg-darker);
+  padding: 2rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.pr-history {
+  background: var(--bg-darker);
+  padding: 2rem;
+  border-radius: 8px;
+}
+
+@keyframes glow {
+  from { opacity: 0.7; }
+  to { opacity: 1; }
+}
+
+/* Estilos específicos para los select */
+select.neon-input {
+  background: var(--bg-darker) !important;
+  color: var(--neon-cyan) !important;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300f3ff'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 15px;
+}
+
+/* Estilos para las opciones del dropdown */
+select.neon-input option {
+  background: var(--bg-darker);
+  color: var(--neon-cyan);
+  border: none;
   padding: 10px;
+}
+
+/* Fondo del dropdown cuando está abierto */
+select.neon-input:focus {
+  background-color: var(--bg-darker);
+}
+
+/* Estilo para el hover de las opciones */
+select.neon-input option:hover {
+  background: rgba(0, 243, 255, 0.1) !important;
 }
