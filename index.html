@@ -1,58 +1,34 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Registro de repeticiones y carga - MYREPS</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MVRE PR - Login</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="app.js" defer></script>
 </head>
 <body>
-  <div id="userContainer" class="centered">
-    <h1>🔥 Registro de repeticiones y carga 🔥 - MYREPS </h1>
-    <p>Por favor, ingresa tu nombre de usuario:</p>
-    <input type="text" id="userName" placeholder="Nombre de usuario" required>
-    <button onclick="setUser()">Iniciar sesión</button>
-  </div>
+    <div class="auth-container">
+        <!-- Login -->
+        <div id="loginSection">
+            <h1 class="neon-title">🔥 MYREPS 🔥</h1>
+            <input type="email" id="loginEmail" placeholder="Correo" class="neon-input">
+            <input type="password" id="loginPassword" placeholder="Contraseña" class="neon-input">
+            <button id="loginBtn" class="neon-btn">Entrar</button>
+            <p class="auth-switch">¿Nuevo usuario? <span id="showRegister">Regístrate</span></p>
+            <p id="loginMessage" class="neon-message"></p>
+        </div>
 
-  <div id="appContainer" class="centered hidden">
-    <h2>Bienvenido, <span id="userDisplay"></span></h2>
-
-    <!-- Resumen de últimos PR por grupo -->
-    <section>
-      <h3>Últimos PR</h3>
-      <div id="lastPRContainer"></div>
-    </section>
-
-    <!-- Selección y registro -->
-    <section>
-      <form id="prForm">
-        <label>Grupo Muscular:
-          <select id="groupSelect" required></select>
-        </label>
-        <label>Ejercicio:
-          <select id="exerciseSelect" required></select>
-        </label>
-        <label>Peso (kg):
-          <input type="number" id="weightInput" required>
-        </label>
-        <label>Repeticiones:
-          <input type="number" id="repsInput" required>
-        </label>
-        <label>Fecha:
-          <input type="date" id="dateInput" required>
-        </label>
-        <button type="submit">Registrar PR</button>
-      </form>
-    </section>
-
-    <!-- Tabla de resultados -->
-    <section>
-      <h3>Historial de PR</h3>
-      <div id="prContainer"></div>
-    </section>
-  </div>
-
-  <script src="app.js"></script>
+        <!-- Registro -->
+        <div id="registerSection" class="hidden">
+            <h1 class="neon-title">✨ Nueva Cuenta</h1>
+            <input type="email" id="registerEmail" placeholder="Correo" class="neon-input">
+            <input type="password" id="registerPassword" placeholder="Contraseña" class="neon-input">
+            <button id="registerBtn" class="neon-btn">Crear Cuenta</button>
+            <p class="auth-switch">¿Ya tienes cuenta? <span id="showLogin">Iniciar Sesión</span></p>
+            <p id="registerMessage" class="neon-message"></p>
+        </div>
+    </div>
 </body>
 </html>
 
