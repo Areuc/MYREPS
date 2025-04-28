@@ -100,9 +100,10 @@ if (document.getElementById('prForm')) {
     const exercises = {
         PECHO: ["Press de Banca", "Press Inclinado", "Press de Banca Unilateral", "Press Inclinado Unilateral", "Cruces entre Poleas"],
         ESPALDA: ["Remo T", "Jalones", "Remo", "Lumbar"],
-        PIERNAS: ["Prensa de piernas", "Hip thrust", "Peso muerto", "Sentadilla Hack", "Isquiotibiales"]
-        BICEPS: ["Curl predicador", "Curl Martillo", "Unilateral Mancuernas", "Biserie", "Barra Z"]
-        TRICEPS: ["Polea alta con barra (rodamiento)", "Polea alta con cuerda", "Katana", "Cboom Cruce polea"]
+        BICEPS: ["Curl Predicador", "Curl Martillo", "Unilateral Mancuernas", "Biserie", "Barra Z"],
+        TRICEPS: ["Polea alta con cuerda", "Polea alta con barra rodamiento", "Cruzado Cboom", "Katana"],
+        PIERNAS: ["Prensa de piernas", "Hip thrust", "Peso Libre", "Sentadilla Hack", "Isquiotibiales", "Extensión de cuádriceps", "Abductor", "Aductor"]
+        
     };
 
     // Cargar ejercicios
@@ -184,6 +185,3 @@ onAuthStateChanged(auth, (user) => {
         if (user) window.location.href = 'app.html';
     }
 });
-
-  
-  
