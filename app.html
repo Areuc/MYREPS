@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MYREPS - App</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="app.js" defer></script>
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h2 class="neon-title">Hola, <span id="userEmail"></span></h2>
+            <button id="logoutBtn" class="neon-btn">Salir</button>
+        </header>
+
+        <section class="pr-section">
+            <h3 class="neon-subtitle">🚀 Nueva Repeticion</h3>
+            <form id="prForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="neon-label">Grupo Muscular</label>
+                        <select id="muscleGroup" class="neon-input" required>
+                            <option value="PECHO">Pecho</option>
+                            <option value="ESPALDA">Espalda</option>
+                            <option value="PIERNAS">Piernas</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="neon-label">Ejercicio</label>
+                        <select id="exercise" class="neon-input" required></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="neon-label">Peso (kg)</label>
+                        <input type="number" id="weight" class="neon-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="neon-label">Repeticiones</label>
+                        <input type="number" id="reps" class="neon-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="neon-label">Fecha</label>
+                        <input type="date" id="prDate" class="neon-input" required>
+                    </div>
+                </div>
+                <button type="submit" class="neon-btn">Guardar PR</button>
+            </form>
+        </section>
+
+        <section class="pr-history">
+            <h3 class="neon-subtitle">📅 Historial de Reps</h3>
+            <div id="prList"></div>
+        </section>
+    </div>
+</body>
+</html>
