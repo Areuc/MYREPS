@@ -147,22 +147,93 @@ if (document.getElementById('prForm')) {
     // Cargar PRs
     async function loadPRs() {
         prList.innerHTML = '';
-        const querySnapshot = await getDocs(collection(db, `users/${currentUser.uid}/prs`));
-        querySnapshot.forEach(doc => {
-            const pr = doc.data();
-            const prElement = document.createElement('div');
-            prElement.className = 'pr-item';
-            prElement.innerHTML = `
-                <div class="pr-group">${pr.group}</div>
-                <div class="pr-exercise">${pr.exercise}</div>
-                <div class="pr-weight">${pr.weight} kg</div>
-                <div class="pr-reps">${pr.reps} reps</div>
-                <div class="pr-date">${pr.date}</div>
-                <button class="delete-btn" data-id="${doc.id}">🗑️</button>
-            `;
-            prList.appendChild(prElement);
-        });
-    }
+      
+        try {
+          const snapshot = await getDocs(collection(db, `users/${currentUser.uid}/prs`));
+          const allPRs = snapshot.docs.map(doc => ({
+            ...doc.data(),
+            id: doc.id
+          }));
+      
+          // Agrupar por grupo + ejercicio
+          const maxByExercise = {};
+          const latestByExercise = {};
+      
+          allPRs.forEach(pr => {
+            const key = `${pr.group}_${pr.exercise}`;
+      
+            // Máximo peso
+            if (!maxByExercise[key] || pr.weight > maxByExercise[key].weight) {
+              maxByExercise[key] = pr;
+            }
+      
+            // Última entrada
+            if (!latestByExercise[key] || pr.date > latestByExercise[key].date) {
+              latestByExercise[key] = pr;
+            }
+          });
+      
+          // Agrupar por grupo muscular
+          const groupedMax = Object.values(maxByExercise).reduce((acc, pr) => {
+            if (!acc[pr.group]) acc[pr.group] = [];
+            acc[pr.group].push(pr);
+            return acc;
+          }, {});
+      
+          const groupedLatest = Object.values(latestByExercise).reduce((acc, pr) => {
+            if (!acc[pr.group]) acc[pr.group] = [];
+            acc[pr.group].push(pr);
+            return acc;
+          }, {});
+      
+          // Renderizar por grupo muscular
+          for (const group of Object.keys(groupedMax)) {
+            const groupBox = document.createElement('div');
+            groupBox.className = 'pr-group';
+            groupBox.innerHTML = `<div class="group-title">Grupo Muscular: ${group}</div>`;
+      
+            const repsGrid = document.createElement('div');
+            repsGrid.className = 'reps-grid';
+      
+            const maxBox = document.createElement('div');
+            maxBox.className = 'reps-box';
+            maxBox.innerHTML = `<strong>💪 Máximos por ejercicio</strong><br/>`;
+      
+            groupedMax[group].forEach(pr => {
+              maxBox.innerHTML += `
+                <div style="margin-top: 10px;">
+                  <strong>${pr.exercise}</strong><br/>
+                  ${pr.weight} kg (${pr.reps} reps) - ${pr.date}
+                </div>
+              `;
+            });
+      
+            const latestBox = document.createElement('div');
+            latestBox.className = 'reps-box';
+            latestBox.innerHTML = `<strong>📅 Últimas reps</strong><br/>`;
+      
+            if (groupedLatest[group]) {
+              groupedLatest[group].forEach(pr => {
+                latestBox.innerHTML += `
+                  <div style="margin-top: 10px;">
+                    <strong>${pr.exercise}</strong><br/>
+                    ${pr.reps} reps con ${pr.weight} kg - ${pr.date}
+                  </div>
+                `;
+              });
+            }
+      
+            repsGrid.appendChild(maxBox);
+            repsGrid.appendChild(latestBox);
+            groupBox.appendChild(repsGrid);
+            prList.appendChild(groupBox);
+          }
+      
+        } catch (error) {
+          console.error('Error al cargar PRs:', error);
+          prList.innerHTML = `<p style="color: red;">Error al cargar los datos</p>`;
+        }
+      }
 
     // Eliminar PR
     prList.addEventListener('click', async (e) => {

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Historial de PRs</title>
+  <link rel="stylesheet" href="style.css" />
+  <script type="module" src="historial.js" defer></script>
+</head>
+<body class="moderno">
+  <div class="app-container">
+    <header>
+      <h2 class="neon-title">📊 Historial de PRs</h2>
+      <button onclick="window.location.href='app.html'" class="neon-btn-back" style="margin-top: 20px;">← Volver</button>
+
+    </header>
+
+    <section class="pr-section">
+      <div class="form-grid">
+        <select id="filterGroup" class="neon-input">
+          <option value="">Todos los grupos</option>
+          <option value="PECHO">Pecho</option>
+          <option value="ESPALDA">Espalda</option>
+          <option value="PIERNAS">Piernas</option>
+          <option value="BICEPS">Biceps</option>
+          <option value="TRICEPS">Triceps</option>
+        </select>
+
+        <select id="filterExercise" class="neon-input">
+          <option value="">Todos los ejercicios</option>
+        </select>
+
+        <input type="date" id="filterDate" class="neon-input" />
+      </div>
+    </section>
+
+    <section class="pr-history">
+      <table>
+        <thead>
+          <tr>
+            <th>Grupo</th>
+            <th>Ejercicio</th>
+            <th>Peso (kg)</th>
+            <th>Reps</th>
+            <th>Fecha</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <!-- Filas dinámicas -->
+          <th>Acción</th>
+        </tbody>
+      </table>
+    </section>
+  </div>
+</body>
+</html>

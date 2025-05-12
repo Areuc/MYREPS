@@ -6,16 +6,22 @@
     <title>MYREPS - App</title>
     <link rel="stylesheet" href="style.css">
     <script type="module" src="app.js" defer></script>
+    <link rel="icon" href="favicon_32x32.png" type="image/png">
+    <img src="right.png" alt="Decoración derecha" class="side-image right">
+    <img src="left.png" alt="Decoración derecha" class="side-image left">
 </head>
 <body>
     <div class="app-container">
         <header>
             <h2 class="neon-title">Hola, <span id="userEmail"></span></h2>
+            <div>
+            <button onclick="window.location.href='historial.html'" class="neon-btn">Ver historial</button>
             <button id="logoutBtn" class="neon-btn">Salir</button>
+            </div>
         </header>
 
         <section class="pr-section">
-            <h3 class="neon-subtitle">🚀 Nueva Repeticion</h3>
+            <h3 class="neon-subtitle">📈 Últimas Reps por Ejercicio</h3>
             <form id="prForm">
                 <div class="form-grid">
                     <div class="form-group">
@@ -54,7 +60,7 @@
         </section>
 
         <section class="pr-history">
-            <h3 class="neon-subtitle">📅 Historial de Reps</h3>
+            <h3 class="neon-subtitle">📅 Ultimos maximos pesos</h3>
             <div id="prList"></div>
         </section>
     </div>
