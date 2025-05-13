@@ -103,8 +103,6 @@ if (document.getElementById('prForm')) {
         BICEPS: ["Curl Predicador", "Curl Martillo", "Unilateral Mancuernas", "Biserie", "Barra Z"],
         TRICEPS: ["Polea alta con cuerda", "Polea alta con barra rodamiento", "Cruzado Cboom", "Katana"],
         PIERNAS: ["Prensa de piernas", "Hip thrust", "Peso Libre", "Sentadilla Hack", "Isquiotibiales", "Extensión de cuádriceps", "Abductor", "Aductor"]
-        HOMBROS: ["Extension de hombros polea", "Press Militar"]
-        ABDOMINAL: ["Mamon al fallo", "Plancha"]
         
     };
 
